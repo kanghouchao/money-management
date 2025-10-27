@@ -1,0 +1,42 @@
+# Gradle
+.gradle/
+build/
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
+
+# vscode
+.vscode/
+
+# eclipse
+.project
+.classpath
+.settings/
+
+# Intellij
+.idea/
+*.iml
+out/
+*.ipr
+*.iws
+
+# MacOS
+.DS_Store
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Logs
+logs/*.log
+*.log
+
+# Temporary files
+tmp/
+temp/
+
+# docker
+.env
