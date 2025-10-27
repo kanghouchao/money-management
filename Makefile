@@ -10,6 +10,11 @@ help:
 	@echo "  ps     - List running containers"
 	@echo "  db     - Access the database container shell"
 
+build:
+	@echo "Building application..."
+	@docker compose build
+	@echo "Build complete."
+
 up:
 	@echo "Starting application..."
 	@docker compose up -d
@@ -17,7 +22,7 @@ up:
 
 logs:
 	@echo "Tailing application logs..."
-	@docker compose logs -f
+	@docker compose logs -f --tail=100 mm
 
 down:
 	@echo "Stopping application..."
@@ -30,6 +35,6 @@ ps:
 
 db:
 	@echo "Accessing database container shell..."
-	@docker compose exec db psql -U ${DB_USER} -d ${DB_NAME}
+	@docker compose exec db mysql -u${DB_USER} -p${DB_PASSWORD} ${DB_NAME}
 
-.PHONY: help up down logs ps db
+.PHONY: help build up down logs ps db

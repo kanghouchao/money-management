@@ -8,9 +8,6 @@ build/
 *.war
 *.ear
 
-# vscode
-.vscode/
-
 # eclipse
 .project
 .classpath

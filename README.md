@@ -39,7 +39,7 @@ This is a Spring Boot application for managing personal finances. It provides fe
 
 3. Start the development environment
     ```bash
-    make up
+    make build up
     ```
 
 4. Access the application
