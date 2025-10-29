@@ -1,62 +1,63 @@
-# Money Management Application
-This is a Spring Boot application for managing personal finances. It provides features to track income, expenses, and generate financial reports.
+# マネーマネジメントアプリケーション
 
-## Equipment Requirements
+これは個人の家計を管理するための Spring Boot アプリケーションです。収入・支出の記録や財務レポートの生成などの機能を提供します。
 
-1. docker and docker-compose
-    - Follow the official installation instructions for your operating system.
-      - [Docker Installation Guide](https://docs.docker.com/get-docker/)
-      - [Docker Compose Installation Guide](https://docs.docker.com/compose/install/)
+## 必要な環境
+
+1. Docker と Docker Compose
+    - お使いの OS に合わせて公式インストール手順に従ってください。
+      - [Docker インストールガイド](https://docs.docker.com/get-docker/)
+      - [Docker Compose インストールガイド](https://docs.docker.com/compose/install/)
 2. make
-    - Make is typically pre-installed on Unix-based systems. For Windows, you can use tools like Chocolatey or install Git Bash which includes Make.
-      - [Make Installation Guide](https://www.gnu.org/software/make/)
+    - Unix 系システムには通常プリインストールされています。Windows の場合は Chocolatey や Git Bash（Make を含む）などを利用してください。
+      - [Make インストールガイド](https://www.gnu.org/software/make/)
 
-3. git
-    - Follow the official installation instructions for your operating system.
-      - [Git Installation Guide](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+3. Git
+    - お使いの OS に合わせて公式インストール手順に従ってください。
+      - [Git インストールガイド](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 
-4. github account
-    - Create a GitHub account if you don't have one already.
-      - [GitHub Sign Up](https://github.com/join)
+4. GitHub アカウント
+    - まだお持ちでない場合は GitHub アカウントを作成してください。
+      - [GitHub サインアップ](https://github.com/join)
 
-5. vscode (recommended)
-    - Download and install Visual Studio Code for code editing.
-      - [VSCode Download](https://code.visualstudio.com/Download)
+5. Visual Studio Code（推奨）
+    - コード編集用に Visual Studio Code をインストールしてください。
+      - [VSCode ダウンロード](https://code.visualstudio.com/Download)
 
-## Development Setup
+## 開発セットアップ
 
-1. Clone the repository
+1. リポジトリをクローン
    ```bash
    git clone https://github.com/kanghouchao/money-management.git
    cd money-management
    ```
 
-2. Set up environment variables
-   copy the `.env.example` file to `.env` and modify the values as needed.
+2. 環境変数の設定
+   `.env.example` を `.env` としてコピーし、必要に応じて値を編集してください。
    ```bash
    cp .env.example .env
    ```
 
-3. Start the development environment
+3. 開発環境を起動
     ```bash
     make build up
     ```
 
-4. Access the application
-    - Open your web browser and navigate to `http://localhost:8080` to access the Money Management application.
+4. アプリケーションにアクセス
+    - ブラウザで `http://localhost:8080` を開いてマネーマネジメントアプリにアクセスします。
 
-5. Stop the development environment
+5. 開発環境の停止
     ```bash
     make down
     ```
 
-## Other Commands
-- Enter the database container
+## その他のコマンド
+- データベースコンテナに入る
     ```bash
     make db
     ```
 
-- View logs
+- ログを表示
     ```bash
     make logs
     ```
