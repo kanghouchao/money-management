@@ -1,0 +1,7 @@
+/**
+ * tailwind.config
+ * @see https://tailwindcss.com/docs/installation/play-cdn
+ */
+@theme {
+  --color-clifford: #da373d;
+}
