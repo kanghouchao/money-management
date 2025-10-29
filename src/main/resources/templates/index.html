@@ -8,5 +8,10 @@
   <body>
     <h1>ようこそ</h1>
     <p>これはサンプルのホームページです。</p>
+    <div th:if="${demo}">
+      <h2>デモ情報</h2>
+      <p>ID: <span th:text="${demo.id}"></span></p>
+      <p>名前: <span th:text="${demo.name}"></span></p>
+    </div>
   </body>
 </html>

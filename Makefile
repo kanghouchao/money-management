@@ -22,7 +22,7 @@ up:
 
 logs:
 	@echo "Tailing application logs..."
-	@docker compose logs -f --tail=100 mm
+	@docker compose logs -f mm
 
 down:
 	@echo "Stopping application..."
