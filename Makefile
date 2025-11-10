@@ -4,6 +4,7 @@ include .env
 
 help:
 	@echo "Makefile commands:"
+	@echo "  build  - Build the application Docker images"
 	@echo "  up     - Start the application using Docker Compose"
 	@echo "  logs   - Tail the application logs"
 	@echo "  down   - Stop the application and remove containers"
