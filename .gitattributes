@@ -1,0 +1,32 @@
+# 既定ではLFでテキストを統一
+* text=auto eol=lf
+
+# Windows用バッチだけCRLFを維持
+*.bat text eol=crlf
+*.cmd text eol=crlf
+gradlew.bat text eol=crlf
+
+# シェルやGradleスクリプトはLF固定
+*.sh text eol=lf
+*.gradle text eol=lf
+gradlew text eol=lf
+
+# 主要なソース／設定ファイル
+*.java text eol=lf
+*.kt text eol=lf
+*.xml text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.properties text eol=lf
+*.md text eol=lf
+*.html text eol=lf
+*.css text eol=lf
+*.js text eol=lf
+
+# バイナリはそのまま扱う
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
