@@ -10,16 +10,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/financial-records")
+@RequestMapping("/financial")
 @RequiredArgsConstructor
-public class FinancialRecordPageController {
+public class FinancialController {
 
   private final FinancialRecordService financialRecordService;
 
-  @GetMapping("/view")
+  @GetMapping
   public String viewFinancialRecords(Model model) {
     List<FinancialRecord> records = financialRecordService.getAllOrderedByRecordedAtDesc();
     model.addAttribute("records", records);
-    return "financial-records";
+    return "financial/records";
   }
 }
