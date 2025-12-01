@@ -4,7 +4,8 @@ WORKDIR /app
 
 COPY . .
 
-RUN ./gradlew build -x test
+RUN --mount=type=cache,id=gradle-cache,target=/home/gradle/.gradle,uid=1000,gid=1000,sharing=locked \
+  ./gradlew build -x test
 
 FROM eclipse-temurin:21-jre-alpine-3.22
 
