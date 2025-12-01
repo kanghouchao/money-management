@@ -40,7 +40,7 @@
 
 3. 開発環境を起動
     ```bash
-    make build up
+    docker compose up -d --wait
     ```
 
 4. アプリケーションにアクセス
@@ -48,17 +48,17 @@
 
 5. 開発環境の停止
     ```bash
-    make down
+    docker compose down
     ```
 
 ## その他のコマンド
 - データベースコンテナに入る
     ```bash
-    make db
+    docker compose exec db bash
     ```
 
 - ログを表示
     ```bash
-    make logs
+    docker compose logs
     ```
 
