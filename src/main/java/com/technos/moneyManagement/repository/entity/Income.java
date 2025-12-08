@@ -21,7 +21,7 @@ import lombok.experimental.SuperBuilder;
 public class Income extends FinancialRecord {
 
   @Enumerated(EnumType.STRING)
-  @Column(nullable = false, length = 64)
+  @Column(nullable = false, columnDefinition = "VARCHAR(64)")
   private IncomeCategory category;
 
   @Override

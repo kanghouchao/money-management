@@ -13,7 +13,7 @@ import jakarta.persistence.InheritanceType;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -34,7 +34,7 @@ public abstract class FinancialRecord {
   private Integer id;
 
   @Column(nullable = false)
-  private LocalDateTime recordedAt;
+  private LocalDate recordedAt;
 
   @Column(length = 512)
   private String note;

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>月間カテゴリ内訳</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link
+      rel="stylesheet"
+      th:href="@{/css/common.css}"
+      href="/css/common.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --accent-green: #4ade80;
+        --accent-rose: #fb7185;
+        --panel-bg: rgba(15, 23, 42, 0.65);
+      }
+
+      body {
+        font-family: "Space Grotesk", "Hiragino Kaku Gothic ProN", system-ui,
+          -apple-system, BlinkMacSystemFont, sans-serif;
+        background: radial-gradient(circle at top left, #0f172a, #020617);
+      }
+
+      .aura {
+        position: absolute;
+        inset: auto;
+        width: 320px;
+        height: 320px;
+        background: radial-gradient(
+          circle,
+          rgba(99, 102, 241, 0.35),
+          transparent
+        );
+        filter: blur(20px);
+        animation: float 12s ease-in-out infinite;
+        z-index: 0;
+      }
+
+      .aura:nth-child(2) {
+        top: 10%;
+        right: 15%;
+        animation-duration: 14s;
+      }
+
+      .aura:nth-child(3) {
+        bottom: 5%;
+        left: 10%;
+        background: radial-gradient(
+          circle,
+          rgba(248, 113, 113, 0.4),
+          transparent
+        );
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translate3d(0, 0, 0) scale(1);
+        }
+        50% {
+          transform: translate3d(20px, -20px, 0) scale(1.05);
+        }
+      }
+
+      .panel {
+        background-color: var(--panel-bg);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(226, 232, 240, 0.1);
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+  </head>
+  <body class="min-h-screen relative text-slate-100">
+    <div class="aura"></div>
+    <div class="aura"></div>
+    <div class="aura"></div>
+
+    <div class="relative z-10 max-w-6xl mx-auto px-6 py-12 space-y-10">
+      <header
+        class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between"
+      >
+        <div>
+          <p class="text-sm uppercase tracking-[0.5em] text-slate-400">
+            Monthly
+          </p>
+          <h1
+            class="text-3xl md:text-4xl font-semibold text-white"
+            th:text="${monthLabel}"
+          ></h1>
+          <p class="text-sm text-slate-400 mt-2">
+            カテゴリ別構成で今月の資金フローを一目で確認できます。
+          </p>
+        </div>
+        <div class="flex gap-3">
+          <a
+            href="/financial"
+            class="px-4 py-2 rounded-full border border-slate-500 text-sm hover:border-white transition"
+            >収支一覧</a
+          >
+          <a
+            href="/"
+            class="px-4 py-2 rounded-full bg-white text-slate-900 text-sm font-medium shadow-lg shadow-white/20"
+            >ホーム</a
+          >
+        </div>
+      </header>
+
+      <section class="grid gap-6 md:grid-cols-3">
+        <div class="panel rounded-2xl p-6 shadow-2xl shadow-black/40">
+          <p class="text-slate-400 text-xs uppercase tracking-widest">
+            Monthly Income
+          </p>
+          <p
+            class="text-3xl font-semibold text-white mt-2"
+            th:text="${incomeTotal}"
+          ></p>
+          <p class="text-xs text-slate-500 mt-1" th:text="${monthLabel}"></p>
+        </div>
+        <div class="panel rounded-2xl p-6 shadow-2xl shadow-black/40">
+          <p class="text-slate-400 text-xs uppercase tracking-widest">
+            Monthly Expense
+          </p>
+          <p
+            class="text-3xl font-semibold text-white mt-2"
+            th:text="${expenseTotal}"
+          ></p>
+          <p class="text-xs text-slate-500 mt-1" th:text="${monthLabel}"></p>
+        </div>
+        <div class="panel rounded-2xl p-6 shadow-2xl shadow-black/40">
+          <p class="text-slate-400 text-xs uppercase tracking-widest">
+            Net Balance
+          </p>
+          <p
+            class="text-3xl font-semibold mt-2"
+            th:text="${netBalance}"
+            th:classappend="${netBalance >= 0} ? 'text-[var(--accent-green)]' : 'text-[var(--accent-rose)]'"
+          ></p>
+          <p class="text-xs text-slate-500 mt-1">収入 − 支出</p>
+        </div>
+      </section>
+
+      <section
+        class="panel rounded-3xl p-8 shadow-[0_30px_80px_rgba(0,0,0,0.45)]"
+      >
+        <div class="flex items-center justify-between mb-6">
+          <div>
+            <p class="text-sm text-slate-400">Category Split</p>
+            <h2 class="text-2xl font-semibold text-white">カテゴリ別シェア</h2>
+          </div>
+          <p class="text-xs text-slate-400">Chart.js Doughnut</p>
+        </div>
+        <div class="grid gap-8 md:grid-cols-2">
+          <div>
+            <h3 class="text-sm text-slate-300 uppercase tracking-[0.3em] mb-3">
+              Income Mix
+            </h3>
+            <div class="relative aspect-square">
+              <canvas id="incomePieChart"></canvas>
+            </div>
+            <p
+              class="text-center text-xs text-slate-400 mt-4"
+              th:if="${#lists.isEmpty(incomeChartLabels)}"
+            >
+              今月登録された収入データはありません。
+            </p>
+          </div>
+          <div>
+            <h3 class="text-sm text-slate-300 uppercase tracking-[0.3em] mb-3">
+              Expense Mix
+            </h3>
+            <div class="relative aspect-square">
+              <canvas id="expensePieChart"></canvas>
+            </div>
+            <p
+              class="text-center text-xs text-slate-400 mt-4"
+              th:if="${#lists.isEmpty(expenseChartLabels)}"
+            >
+              今月登録された支出データはありません。
+            </p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <script th:inline="javascript">
+      const incomeChartLabels = /*[[${incomeChartLabels}]]*/ [];
+      const incomeChartValues = /*[[${incomeChartValues}]]*/ [];
+      const expenseChartLabels = /*[[${expenseChartLabels}]]*/ [];
+      const expenseChartValues = /*[[${expenseChartValues}]]*/ [];
+
+      const palette = [
+        "#4ade80",
+        "#2dd4bf",
+        "#38bdf8",
+        "#c084fc",
+        "#fde047",
+        "#fb7185",
+        "#f97316",
+        "#a5b4fc",
+      ];
+
+      const baseOptions = {
+        cutout: "60%",
+        plugins: {
+          legend: {
+            position: "bottom",
+            labels: {
+              color: "#cbd5f5",
+              usePointStyle: true,
+              pointStyleWidth: 8,
+              boxWidth: 8,
+            },
+          },
+          tooltip: {
+            backgroundColor: "rgba(2,6,23,0.9)",
+            borderColor: "rgba(148,163,184,0.3)",
+            borderWidth: 1,
+            padding: 12,
+            callbacks: {
+              label: function (context) {
+                const label = context.label || "";
+                const value = context.raw || 0;
+                const formatted = new Intl.NumberFormat("ja-JP").format(value);
+                return `${label}: ¥${formatted}`;
+              },
+            },
+          },
+        },
+      };
+
+      function buildDataset(values) {
+        const colors = [];
+        for (let i = 0; i < values.length; i += 1) {
+          colors.push(palette[i % palette.length]);
+        }
+        return {
+          data: values,
+          backgroundColor: colors,
+          borderWidth: 0,
+        };
+      }
+
+      const incomeCtx = document.getElementById("incomePieChart");
+      if (incomeCtx && incomeChartLabels.length) {
+        new Chart(incomeCtx, {
+          type: "doughnut",
+          data: {
+            labels: incomeChartLabels,
+            datasets: [buildDataset(incomeChartValues)],
+          },
+          options: baseOptions,
+        });
+      }
+
+      const expenseCtx = document.getElementById("expensePieChart");
+      if (expenseCtx && expenseChartLabels.length) {
+        new Chart(expenseCtx, {
+          type: "doughnut",
+          data: {
+            labels: expenseChartLabels,
+            datasets: [buildDataset(expenseChartValues)],
+          },
+          options: baseOptions,
+        });
+      }
+    </script>
+  </body>
+</html>
