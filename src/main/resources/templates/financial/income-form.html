@@ -16,13 +16,11 @@
       <header class="mb-6 flex items-center justify-between">
         <h1 class="text-xl font-semibold">収入の登録</h1>
         <div class="space-x-4 text-sm">
-          <a
-            href="/financial"
-            class="text-indigo-600 underline hover:text-indigo-700"
+          <a href="/" class="text-indigo-600 underline hover:text-indigo-700"
             >収支一覧</a
           >
           <a
-            href="/financial/expense/new"
+            href="/expense/new"
             class="text-gray-600 underline hover:text-gray-800"
             >支出登録へ</a
           >
@@ -31,7 +29,7 @@
 
       <section class="bg-white shadow rounded-lg p-6">
         <form
-          th:action="@{/financial/income}"
+          th:action="@{/income}"
           th:object="${incomeForm}"
           method="post"
           class="space-y-6"
@@ -128,7 +126,7 @@
 
           <div class="flex justify-end space-x-3">
             <a
-              href="/financial"
+              href="/"
               class="inline-flex items-center px-4 py-2 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-50"
               >一覧へ戻る</a
             >

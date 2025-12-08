@@ -1,38 +1,38 @@
 # Money Management 向け Copilot ガイド
 
-## プロジェクト概要
-- Spring Boot 3.5.8 + Java 21 の単一モジュール Gradle プロジェクトで、エントリポイントは `MoneyManagementApplication`。
-- 収入/支出管理を想定しているが、現状は `Demo` エンティティを CRUD する最小構成。
-- MVC レイヤは controller → service → repository の 3 層で明確に分離されている。
-- テンプレートは Thymeleaf、スタイルは Tailwind CDN + `static/css/common.css` を組み合わせる。
+## アーキテクチャ
+- Spring Boot 3.5.8 + Java 21 の単一モジュール Gradle（`build.gradle`）で、`MoneyManagementApplication` → controller → service → repository の 3 層のみを許容。
+- 画面はすべて `FinancialController` がルート `/` から出し分け、一覧 (`financial/records`)、フォーム (`financial/income-form` / `expense-form`)、分析 (`financial/overview` / `calendar`) の 3 画面へ遷移する。
 
-## バックエンドアーキテクチャ
-- `controller/Index.java` がルート (`GET/POST /`) を処理し、Model に `demos` を積んで `templates/index.html` を描画する。
-- POST `/` は `DemoService` に保存を委譲し、`name` 未入力時だけ `templates/error/400.html` を返すバリデーションがある。
-- `DemoService` は `DemoRepository` の薄いラッパーとして `getAllDemos` と `save` を提供し、@RequiredArgsConstructor で依存注入している。
-- 例外処理や DTO 変換は未実装のため、新機能でもまず service 層でドメインロジックを完結させる方針に合わせる。
+## サービス / リポジトリ
+- `FinancialRecordService` は `FinancialRecordRepository` だけを呼び出す。取得は `findAllByOrderByRecordedAtDesc` か `findAllByRecordedAtBetweenOrderByRecordedAtAsc` 経由で順序を保証する。
+- `registerIncome/Expense` は `recordedAt` 未入力を `LocalDate.now()` で補正し、`Income` / `Expense` ビルダーを使って永続化するのが唯一の登録経路。
+- `getCurrentMonthCategoryBreakdown` は `MonthlyCategoryBreakdown` に今月のカテゴリ別合計を詰めてチャート用モデル (`incomeChartLabels` 等) を整形する。
+- `getRecordsForMonth` は `YearMonth` から 1 ヶ月分のレンジを作り、カレンダー画面向けに昇順で返す。
 
-## データ層と設定
-- `repository/DemoRepository` は `JpaRepository<Demo, Integer>`。新しい永続化対象も同じパターンで作成し、ID は `GenerationType.IDENTITY` が既定。
-- `repository/entity/Demo` は `@Table(name = "demo")` 固定のため、テーブル名・カラムを変える場合はマイグレーションも忘れずに更新。
-- `application.properties` はすべての DB 接続設定を `${DB_*}` 環境変数から読み込み、Hibernate SQL/バインドログを DEBUG/TRACE で出す構成。
-- `docker-compose.yml` の `mm` サービスは `DB_PORT:-5432` をデフォルトにしているが、MySQL には `.env` の `DB_PORT=3306` を必ず読み込ませて整合性を取る。
+## データモデル
+- `FinancialRecord` は `@Inheritance(SINGLE_TABLE)` + `record_discriminator` で `Income`/`Expense` を同居させ、`@PrePersist` で `recordType` を自動設定するため手動代入禁止。
+- 金額カラムは `precision=15, scale=2`、フォーム側も `@DecimalMin("0.01")` / HTML `min="1" step="1"` を維持すること。
+- `IncomeCategory` / `ExpenseCategory` は絵文字アイコン + 日本語ラベルを持ち、DB には列挙文字列 (VARCHAR 64) を保存する。
 
-## フロントエンド/テンプレート
-- `templates/index.html` は `th:each="demoItem : ${demos}"` でリスト表示するため、モデルキー `demos` を欠かさないこと。
-- Tailwind は CDN (`@tailwindcss/browser@4`) で読み込み、`static/css/common.css` の `@theme` でカスタムカラーを定義している。
-- 入力フォームは `th:action="@{/}"` と `name="name"` を固定で期待するため、サーバ側フォームバインドとも整合させる。
-- エラービューは `templates/error/400.html` のみ。追加エラーを増やす際は `ControllerAdvice` ではなくテンプレートを増やすのが既存方針。
+## フォーム & ビュー契約
+- `IncomeForm` / `ExpenseForm` (`controller/request`) は `@DateTimeFormat` 済み `recordedAt` とカテゴリ必須。GET では `ensureIncomeForm/ensureExpenseForm` を呼んで `Model` に追加する。
+- POST 時は `BindingResult` エラーで同じテンプレートを再描画し、必ず `incomeCategories` / `expenseCategories` を再投入。成功時のみ `RedirectAttributes#addFlashAttribute("successMessage", …)` で `/` へ PRG。
+- `financial/records.html` は `records` (List<`FinancialRecordView`>) が前提で、`record.recordType.label` や `#temporals.format` を使う。空リスト時はプレースホルダ表示。
+- `financial/overview.html` は Chart.js 4 を CDN で読み込み、`incomeChartLabels/Values` と `expenseChartLabels/Values` が空ならグラフを描画しない。新しい分析画面もこの配列形式に合わせる。
+- `financial/calendar.html` は `weeks` (List<List<`CalendarDayView`>>) と `weekdays`, `today`, `monthIncomeTotal` などが揃っていることが条件。
+
+## フロントエンド指針
+- すべてのテンプレートで Tailwind Play CDN + `static/css/common.css` のカスタムテーマ (`@theme`) を共有。追加スタイルはページ内 `<style>` で閉じ、既存カラーパレットを破壊しない。
+- UI ナビはルート (`/`, `/income/new`, `/expense/new`, `/overview`, `/calendar`) を直リンクする構成。新規画面も既存ボタン配置・ラベルを踏襲する。
 
 ## 開発ワークフロー
-- 初回は `.env.example` をコピーして DB 資格情報を設定し、`docker compose up -d --wait` で `db` と `mm` を起動する。
-- Makefile で `make up/down/logs/db` をラップしており、`make logs` は `mm` サービス、`make db` は `docker compose exec db mysql -u${DB_USER}` を実行する。
-- アプリ単体をローカルで動かすときは `./gradlew bootRun`、テストは `./gradlew test`（JUnit Platform）で実行。
-- DB には MySQL 8.0.44 を使用し、`spring.jpa.hibernate.ddl-auto=update` が有効なのでテーブル変更はローカルで自動反映されるが、本番相当ではマイグレーション管理が必要。
-- SQL/バインドログが INFO/DEBUG/TRACE で大量に出るため、CI や新規テストではログノイズを考慮してアサーションを組む。
+- `.env.example` を `.env` にコピーし、`DB_HOST=db`・`DB_PORT=3306` 等を指定。`make up` (=`docker compose up -d`) で `mm` と `db` を起動、`make down` でボリュームごと停止。
+- サービス単体起動は `./gradlew bootRun`、テストは `./gradlew test`。Docker 内 DB に入る場合は `make db` が `mysql -u${DB_USER}` をラップする。
+- `spring.jpa.hibernate.ddl-auto=create-drop` + `logging.level.org.hibernate.SQL=DEBUG` / `BasicBinder=TRACE` がデフォルトなので、大量 INSERT 時のログノイズを想定して実装する。
 
-## 実装上のヒント
-- 新しい機能も controller → service → repository の責務分離を守り、`@RequiredArgsConstructor` で依存を注入するのが既定スタイル。
-- Lombok (`@Data`, `@RequiredArgsConstructor`) を多用するため、手動で getter/setter を書かずアノテーションを揃える。
-- 環境依存値はコードにベタ書きせず `application.properties` で `${}` プレースホルダを使って注入する。
-- フォーム POST 後は `redirect:/...` を返して PRG パターンを維持し、ビューに直接フォワードしないことが現行挙動と整合する。
+## よくある落とし穴
+- `Model` に `incomeForm` / `expenseForm` が無い状態でテンプレートを開くとバインディング例外になる。GET で new する既存ヘルパーを必ず利用。
+- `FinancialRecordType` は派生エンティティが自動設定するため、DTO から値を渡さない。重複して設定すると `recordType` が null のまま保存される恐れがある。
+- `FinancialRecordService#getCurrentMonthCategoryBreakdown` は全件ロード後に今月分だけフィルタするため、件数が増えると遅くなる。月次処理を追加する際は同じ前提を共有し、テスト用データ件数を抑える。
+- フラッシュメッセージキーは `successMessage` 固定。別のキーを使うと `records.html` で表示されない。

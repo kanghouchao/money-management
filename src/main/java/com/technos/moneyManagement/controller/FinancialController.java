@@ -34,7 +34,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
-@RequestMapping("/financial")
+@RequestMapping("/")
 @RequiredArgsConstructor
 public class FinancialController {
 
@@ -48,14 +48,14 @@ public class FinancialController {
     return "financial/records";
   }
 
-  @GetMapping("/income/new")
+  @GetMapping("income/new")
   public String showIncomeForm(Model model) {
     ensureIncomeForm(model);
     model.addAttribute("incomeCategories", IncomeCategory.values());
     return "financial/income-form";
   }
 
-  @PostMapping("/income")
+  @PostMapping("income")
   public String submitIncome(
       @Valid @ModelAttribute("incomeForm") IncomeForm incomeForm,
       BindingResult bindingResult,
@@ -73,17 +73,17 @@ public class FinancialController {
         incomeForm.getCategory());
 
     redirectAttributes.addFlashAttribute("successMessage", "収入を登録しました。");
-    return "redirect:/financial";
+    return "redirect:/";
   }
 
-  @GetMapping("/expense/new")
+  @GetMapping("expense/new")
   public String showExpenseForm(Model model) {
     ensureExpenseForm(model);
     model.addAttribute("expenseCategories", ExpenseCategory.values());
     return "financial/expense-form";
   }
 
-  @PostMapping("/expense")
+  @PostMapping("expense")
   public String submitExpense(
       @Valid @ModelAttribute("expenseForm") ExpenseForm expenseForm,
       BindingResult bindingResult,
@@ -101,7 +101,7 @@ public class FinancialController {
         expenseForm.getCategory());
 
     redirectAttributes.addFlashAttribute("successMessage", "支出を登録しました。");
-    return "redirect:/financial";
+    return "redirect:/";
   }
 
   private void ensureIncomeForm(Model model) {
@@ -125,7 +125,7 @@ public class FinancialController {
         record.getNote());
   }
 
-  @GetMapping("/overview")
+  @GetMapping("overview")
   public String showOverview(Model model) {
     MonthlyCategoryBreakdown breakdown = financialRecordService.getCurrentMonthCategoryBreakdown();
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy年MM月");
@@ -160,7 +160,7 @@ public class FinancialController {
     return "financial/overview";
   }
 
-  @GetMapping("/calendar")
+  @GetMapping("calendar")
   public String showCalendar(Model model) {
     YearMonth currentMonth = YearMonth.now();
     List<FinancialRecordView> monthlyViews =
