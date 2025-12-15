@@ -40,6 +40,7 @@
 
 3. 開発環境を起動
     ```bash
+    docker compose build
     docker compose up -d --wait
     ```
 
