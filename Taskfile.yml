@@ -1,0 +1,66 @@
+version: "3"
+
+dotenv: [".env"]
+
+tasks:
+  default:
+    cmds:
+      - task: help
+    silent: true
+
+  help:
+    desc: 利用可能なタスク一覧を表示します
+    cmds:
+      - echo "利用可能なコマンド:"
+      - echo "  task build  - Dockerイメージをビルドします"
+      - echo "  task up     - Docker Compose でアプリケーションを起動します"
+      - echo "  task logs   -アプリケーションのログを表示します"
+      - echo "  task down   - アプリケーションを停止し、コンテナを削除します"
+      - echo "  task ps     - 起動中のコンテナ一覧を表示します"
+      - echo "  task db     - データベースコンテナのシェルにアクセスします"
+    silent: true
+
+  build:
+    desc: Dockerイメージをビルドします
+    cmds:
+      - echo "Building application..."
+      - docker compose build
+      - echo "Build complete."
+    silent: true
+
+  up:
+    desc: Docker Compose でアプリケーションを起動します
+    cmds:
+      - echo "Starting application..."
+      - docker compose up -d
+      - echo "Application started. Access it at http://localhost:8080"
+    silent: true
+
+  logs:
+    desc: アプリケーションのログを表示します
+    cmds:
+      - echo "Tailing application logs..."
+      - docker compose logs -f mm
+    silent: true
+
+  down:
+    desc: アプリケーションを停止し、コンテナを削除します
+    cmds:
+      - echo "Stopping application..."
+      - docker compose down -v
+      - echo "Application stopped."
+    silent: true
+
+  ps:
+    desc: 起動中のコンテナ一覧を表示します
+    cmds:
+      - echo "Listing running containers..."
+      - docker compose ps
+    silent: true
+
+  db:
+    desc: データベースコンテナのシェルにアクセスします
+    cmds:
+      - echo "Accessing database container shell..."
+      - docker compose exec db mysql -u${DB_USER} -p${DB_PASSWORD} ${DB_NAME}
+    silent: true

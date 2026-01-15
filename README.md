@@ -8,9 +8,9 @@
     - お使いの OS に合わせて公式インストール手順に従ってください。
       - [Docker インストールガイド](https://docs.docker.com/get-docker/)
       - [Docker Compose インストールガイド](https://docs.docker.com/compose/install/)
-2. make
-    - Unix 系システムには通常プリインストールされています。Windows の場合は Chocolatey や Git Bash（Make を含む）などを利用してください。
-      - [Make インストールガイド](https://www.gnu.org/software/make/)
+2. Task (go-task)
+    - シンプルなタスクランナーです。クロスプラットフォームで動作し、Windows 環境でも推奨されます。
+      - [Task インストールガイド](https://taskfile.dev/installation/)
 
 3. Git
     - お使いの OS に合わせて公式インストール手順に従ってください。
@@ -40,8 +40,7 @@
 
 3. 開発環境を起動
     ```bash
-    docker compose build
-    docker compose up -d --wait
+    task build up
     ```
 
 4. アプリケーションにアクセス
@@ -49,18 +48,18 @@
 
 5. 開発環境の停止
     ```bash
-    docker compose down
+    task down
     ```
 
 ## その他のコマンド
-- データベースコンテナに入る
+- データベースコンテナに入る (MySQL クライアント)
     ```bash
-    docker compose exec db bash
+    task db
     ```
 
 - ログを表示
     ```bash
-    docker compose logs
+    task logs
     ```
 - ソースのアプデート
     ```bash

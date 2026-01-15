@@ -2,6 +2,7 @@
     "recommendations": [
         "vscjava.vscode-java-pack",
         "vscjava.vscode-gradle",
-        "josevseb.google-java-format-for-vs-code"
+        "josevseb.google-java-format-for-vs-code",
+        "task.vscode-task"
     ]
 }
