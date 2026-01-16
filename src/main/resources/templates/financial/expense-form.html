@@ -1,144 +1,138 @@
-<!DOCTYPE html>
+<!doctype html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ja">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>支出登録</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link
-      rel="stylesheet"
-      th:href="@{/css/common.css}"
-      href="/css/common.css"
-    />
-  </head>
-  <body class="min-h-screen bg-gray-50 py-10">
-    <div class="max-w-3xl mx-auto px-4">
-      <header class="mb-6 flex items-center justify-between">
-        <h1 class="text-xl font-semibold">支出の登録</h1>
-        <div class="space-x-4 text-sm">
-          <a href="/" class="text-indigo-600 underline hover:text-indigo-700"
-            >収支一覧</a
-          >
-          <a
-            href="/income/new"
-            class="text-gray-600 underline hover:text-gray-800"
-            >収入登録へ</a
-          >
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Expenses</title>
+  <link rel="stylesheet" th:href="@{/css/expense-form.css}" href="css/expense-form.css">
+</head>
+<body>
+  <main class="container">
+    <h1>Expenses</h1>
+    <form id="expense-form" class="form">
+      <label>Date
+        <input type="text" id="date" placeholder="YYYY-MM-DD" readonly required>
+      </label>
+
+      <label>Category
+        <div id="category" class="category-picker" role="radiogroup" aria-required="true" data-value="">
+          <button type="button" class="cat-btn" data-value="Food" data-color="green" aria-checked="false">
+            <span class="cat-icon" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 2v6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M11 2v6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M7 8h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            </span>
+            <span class="cat-label">Food</span>
+          </button>
+          <button type="button" class="cat-btn" data-value="Transport" data-color="orange" aria-checked="false">
+            <span class="cat-icon" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="7" width="18" height="7" rx="2" stroke="currentColor" stroke-width="2"/><circle cx="7.5" cy="17.5" r="1.5" fill="currentColor"/><circle cx="16.5" cy="17.5" r="1.5" fill="currentColor"/></svg>
+            </span>
+            <span class="cat-label">Transport</span>
+          </button>
+          <button type="button" class="cat-btn" data-value="Utilities" data-color="pink" aria-checked="false">
+            <span class="cat-icon" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z" stroke="currentColor" stroke-width="1" stroke-linejoin="round" fill="currentColor"/></svg>
+            </span>
+            <span class="cat-label">Utilities</span>
+          </button>
+          <button type="button" class="cat-btn" data-value="Entertainment" data-color="blue" aria-checked="false">
+            <span class="cat-icon" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2l2.9 6.3L21 9.1l-5 3.8L17 21l-5-3.2L7 21l1-8.1L3 9.1l6.1-.8L12 2z" stroke="currentColor" stroke-width="0.5" fill="currentColor"/></svg>
+            </span>
+            <span class="cat-label">Entertainment</span>
+          </button>
+          
+
+          <button type="button" class="cat-btn" data-value="Clothes" data-color="violet" aria-checked="false">
+            <span class="cat-icon" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 7l3-3h10l3 3v11a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7z" fill="currentColor"/></svg>
+            </span>
+            <span class="cat-label">Clothes</span>
+          </button>
+          <button type="button" class="cat-btn" data-value="Medical" data-color="red" aria-checked="false">
+            <span class="cat-icon" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 11h6v2h-6v6h-2v-6H5v-2h6V5h2v6z" fill="currentColor"/></svg>
+            </span>
+            <span class="cat-label">Medical</span>
+          </button>
+          <button type="button" class="cat-btn" data-value="Housing" data-color="teal" aria-checked="false">
+            <span class="cat-icon" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 3l9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V10l9-7z" fill="currentColor"/></svg>
+            </span>
+            <span class="cat-label">Housing</span>
+          </button>
+          <button type="button" class="cat-btn" data-value="Phone Bill" data-color="yellow" aria-checked="false">
+            <span class="cat-icon" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7 2h10v2H7V2zm5 4a4 4 0 1 1 0 8 4 4 0 0 1 0-8z" fill="currentColor"/></svg>
+            </span>
+            <span class="cat-label">Phone Bill</span>
+          </button>
+          <button type="button" class="cat-btn" data-value="Other" data-color="gray" aria-checked="false">
+            <span class="cat-icon" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 10v7a2 2 0 0 1-2 2H7l-4-4V5a2 2 0 0 1 2-2h11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <span class="cat-label">Other</span>
+          </button>
         </div>
-      </header>
+        <input type="hidden" id="category-input" required>
+      </label>
 
-      <section class="bg-white shadow rounded-lg p-6">
-        <form
-          th:action="@{/expense}"
-          th:object="${expenseForm}"
-          method="post"
-          class="space-y-6"
-        >
-          <div>
-            <label
-              for="recordedAt"
-              class="block text-sm font-medium text-gray-700"
-              >記録日時</label
-            >
-            <input
-              type="date"
-              id="recordedAt"
-              th:field="*{recordedAt}"
-              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-              required
-            />
-            <p
-              class="mt-1 text-sm text-red-600"
-              th:if="${#fields.hasErrors('recordedAt')}"
-              th:errors="*{recordedAt}"
-            ></p>
-          </div>
+      <label>Amount
+        <div class="amount-row">
+          <button type="button" id="amount-display" class="amount-display">¥0</button>
+        </div>
+        <input type="hidden" id="amount-input" required>
+      </label>
 
-          <div>
-            <label for="amount" class="block text-sm font-medium text-gray-700"
-              >金額 (円)</label
-            >
-            <input
-              type="number"
-              id="amount"
-              th:field="*{amount}"
-              min="1"
-              step="1"
-              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-              required
-            />
-            <p
-              class="mt-1 text-sm text-red-600"
-              th:if="${#fields.hasErrors('amount')}"
-              th:errors="*{amount}"
-            ></p>
-          </div>
+      <label>Note
+        <textarea id="note" rows="2" placeholder="Optional"></textarea>
+      </label>
 
-          <div>
-            <label
-              for="category"
-              class="block text-sm font-medium text-gray-700"
-              >カテゴリ</label
-            >
-            <select
-              id="category"
-              th:field="*{category}"
-              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-              required
-            >
-              <option
-                value=""
-                disabled
-                th:selected="${expenseForm.category} == null"
-              >
-                選択してください
-              </option>
-              <option
-                th:each="category : ${expenseCategories}"
-                th:value="${category}"
-                th:text="${category.icon + ' ' + category.label}"
-              ></option>
-            </select>
-            <p
-              class="mt-1 text-sm text-red-600"
-              th:if="${#fields.hasErrors('category')}"
-              th:errors="*{category}"
-            ></p>
-          </div>
+      <div class="actions">
+        <button type="submit">Add Expense</button>
+      </div>
+    </form>
+    
+  </main>
 
-          <div>
-            <label for="note" class="block text-sm font-medium text-gray-700"
-              >メモ</label
-            >
-            <textarea
-              id="note"
-              th:field="*{note}"
-              rows="3"
-              class="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-              placeholder="必要に応じてメモを残してください"
-            ></textarea>
-            <p
-              class="mt-1 text-sm text-red-600"
-              th:if="${#fields.hasErrors('note')}"
-              th:errors="*{note}"
-            ></p>
-          </div>
-
-          <div class="flex justify-end space-x-3">
-            <a
-              href="/"
-              class="inline-flex items-center px-4 py-2 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-50"
-              >一覧へ戻る</a
-            >
-            <button
-              type="submit"
-              class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none"
-            >
-              登録する
-            </button>
-          </div>
-        </form>
-      </section>
+  <div id="date-picker" class="date-picker hidden" aria-hidden="true">
+  <div id="dp-backdrop" class="dp-backdrop"><div class="dp-ok">OK</div></div>
+    <div class="dp-panel" role="dialog" aria-modal="true" aria-labelledby="dp-title">
+      <div class="dp-header">
+        <div id="dp-title">Select Date</div>
+        <button id="dp-done" class="small-btn">Done</button>
+      </div>
+      <div class="dp-body">
+        <div class="dp-column" id="dp-day"></div>
+        <div class="dp-column" id="dp-month"></div>
+        <div class="dp-column" id="dp-year"></div>
+      </div>
     </div>
-  </body>
+  </div>
+
+  <!-- Calculator keypad for amount entry -->
+  <div id="calc" class="calc hidden" aria-hidden="true">
+    <div id="calc-backdrop" class="dp-backdrop"></div>
+    <div class="calc-panel" role="dialog" aria-modal="true" aria-labelledby="calc-title">
+      <div class="calc-display" id="calc-display">0</div>
+      <div class="calc-keys">
+        <button class="calc-key">7</button>
+        <button class="calc-key">8</button>
+        <button class="calc-key">9</button>
+        <button class="calc-key">DEL</button>
+        <button class="calc-key">4</button>
+        <button class="calc-key">5</button>
+        <button class="calc-key">6</button>
+        <button class="calc-key">C</button>
+        <button class="calc-key">1</button>
+        <button class="calc-key">2</button>
+        <button class="calc-key">3</button>
+        <button class="calc-key">.</button>
+        <button class="calc-key">0</button>
+        <button class="calc-key" data-action="done">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
 </html>
