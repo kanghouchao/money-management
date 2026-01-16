@@ -1,193 +1,123 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ja">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>収入登録</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link
       rel="stylesheet"
-      th:href="@{/css/common.css}"
-      href="/css/common.css"
+      th:href="@{/css/financial-form.css}"
+      href="/css/financial-form.css"
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesk:wght@500;600&family=Noto+Sans+JP:wght@400;500&display=swap"
-      rel="stylesheet"
-    />
-    <style>
-      body {
-        font-family: "Noto Sans JP", "Hiragino Kaku Gothic ProN", system-ui,
-          -apple-system, BlinkMacSystemFont, sans-serif;
-        background: radial-gradient(
-          circle at top,
-          #fff3d7,
-          #fde0c8 45%,
-          #f8cdc0
-        );
-        color: #1f2937;
-      }
-
-      h1,
-      h2 {
-        font-family: "Bricolage Grotesk", "Noto Sans JP", sans-serif;
-        font-weight: 600;
-        letter-spacing: 0.04em;
-      }
-
-      .form-card {
-        background: rgba(255, 255, 255, 0.92);
-        border-radius: 1.5rem;
-        border: 1px solid rgba(15, 23, 42, 0.06);
-        box-shadow: 0 15px 40px rgba(255, 123, 0, 0.12);
-        transition: transform 120ms ease, box-shadow 120ms ease;
-      }
-
-      .form-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 22px 45px rgba(255, 123, 0, 0.16);
-      }
-    </style>
   </head>
-  <body class="min-h-screen py-10">
-    <div class="max-w-3xl mx-auto px-4 space-y-6">
-      <header class="flex flex-col gap-4">
-        <div>
-          <p class="text-sm text-amber-700 tracking-[0.3em] uppercase">
-            Income Form
-          </p>
-          <h1 class="text-4xl text-slate-900">収入の登録</h1>
-          <p class="text-sm text-slate-600 mt-2">
-            新しい収入を記録してください。
-          </p>
+  <body>
+    <main class="container">
+      <div class="header-nav">
+        <div class="header-top">
+          <div>
+            <p class="page-subtitle">Income Form</p>
+            <h1>収入の登録</h1>
+            <p class="description">新しい収入を記録してください。</p>
+          </div>
+          <nav class="nav-links">
+            <a href="/" class="nav-btn">一覧へ戻る</a>
+            <a href="/expense/new" class="nav-btn">支出登録へ</a>
+          </nav>
         </div>
-        <div class="flex flex-wrap gap-3">
-          <a
-            href="/"
-            class="px-4 py-2 rounded-full border border-slate-300 text-sm text-slate-700 hover:bg-white/80"
-            >収支一覧</a
-          >
-          <a
-            href="/expense/new"
-            class="px-4 py-2 rounded-full border border-slate-300 text-sm text-slate-700 hover:bg-white/80"
-            >支出登録へ</a
-          >
-        </div>
-      </header>
+      </div>
 
-      <section class="form-card p-8">
+      <section class="form-card">
         <form
           th:action="@{/income}"
           th:object="${incomeForm}"
           method="post"
-          class="space-y-6"
+          class="form"
         >
-          <div>
-            <label
-              for="recordedAt"
-              class="block text-sm font-medium text-slate-700"
-              >記録日時</label
-            >
-            <input
-              type="date"
-              id="recordedAt"
-              th:field="*{recordedAt}"
-              class="mt-2 block w-full px-4 py-3 rounded-lg border border-slate-200 bg-slate-50 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-200"
-              required
-            />
-            <p
-              class="mt-2 text-sm text-rose-500"
-              th:if="${#fields.hasErrors('recordedAt')}"
-              th:errors="*{recordedAt}"
-            ></p>
-          </div>
-
-          <div>
-            <label for="amount" class="block text-sm font-medium text-slate-700"
-              >金額 (円)</label
-            >
+          <div class="form-group">
+            <label for="amount">金額 (円)</label>
             <input
               type="number"
               id="amount"
               th:field="*{amount}"
               min="1"
               step="1"
-              class="mt-2 block w-full px-4 py-3 rounded-lg border border-slate-200 bg-slate-50 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-200"
+              placeholder="0"
               required
             />
             <p
-              class="mt-2 text-sm text-rose-500"
+              class="text-error"
               th:if="${#fields.hasErrors('amount')}"
               th:errors="*{amount}"
             ></p>
           </div>
 
-          <div>
-            <label
-              for="category"
-              class="block text-sm font-medium text-slate-700"
-              >カテゴリ</label
-            >
-            <select
+          <div class="form-group">
+            <label for="recordedAt">記録日</label>
+            <input
+              type="date"
+              id="recordedAt"
+              th:field="*{recordedAt}"
+              required
+            />
+            <p
+              class="text-error"
+              th:if="${#fields.hasErrors('recordedAt')}"
+              th:errors="*{recordedAt}"
+            ></p>
+          </div>
+
+          <div class="form-group">
+            <label>カテゴリ</label>
+            <div class="category-picker" role="radiogroup" aria-required="true">
+              <button
+                type="button"
+                th:each="cat, stat : ${incomeCategories}"
+                class="cat-btn"
+                th:classappend="'color-' + ${stat.index % 10}"
+                th:data-value="${cat.name()}"
+                aria-checked="false"
+              >
+                <span class="cat-icon" th:text="${cat.icon}"></span>
+                <span class="cat-label" th:text="${cat.label}"></span>
+              </button>
+            </div>
+            <input
+              type="hidden"
               id="category"
               th:field="*{category}"
-              class="mt-2 block w-full px-4 py-3 rounded-lg border border-slate-200 bg-slate-50 text-slate-900 focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-200"
               required
-            >
-              <option
-                value=""
-                disabled
-                th:selected="${incomeForm.category} == null"
-              >
-                選択してください
-              </option>
-              <option
-                th:each="category : ${incomeCategories}"
-                th:value="${category}"
-                th:text="${category.icon + ' ' + category.label}"
-              ></option>
-            </select>
+            />
             <p
-              class="mt-2 text-sm text-rose-500"
+              class="text-error"
               th:if="${#fields.hasErrors('category')}"
               th:errors="*{category}"
             ></p>
           </div>
 
-          <div>
-            <label for="note" class="block text-sm font-medium text-slate-700"
-              >メモ</label
-            >
+          <div class="form-group">
+            <label for="note">メモ</label>
             <textarea
               id="note"
               th:field="*{note}"
               rows="3"
-              class="mt-2 block w-full px-4 py-3 rounded-lg border border-slate-200 bg-slate-50 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-200 resize-none"
               placeholder="必要に応じてメモを残してください"
             ></textarea>
             <p
-              class="mt-2 text-sm text-rose-500"
+              class="text-error"
               th:if="${#fields.hasErrors('note')}"
               th:errors="*{note}"
             ></p>
           </div>
 
-          <div class="flex gap-3 pt-4">
-            <a
-              href="/"
-              class="px-6 py-2 rounded-full border border-slate-300 text-sm text-slate-700 hover:bg-white/80 transition-colors"
-              >一覧へ戻る</a
-            >
-            <button
-              type="submit"
-              class="px-6 py-2 rounded-full bg-emerald-600 text-white text-sm shadow-lg shadow-emerald-600/30 hover:bg-emerald-700 transition-colors focus:outline-none"
-            >
-              登録する
-            </button>
+          <div class="actions">
+            <button type="submit">登録する</button>
           </div>
         </form>
       </section>
-    </div>
+    </main>
+
+    <script src="/javascript/financial-form.js"></script>
   </body>
 </html>
