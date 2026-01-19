@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ja">
   <head>
     <meta charset="UTF-8" />
@@ -18,8 +18,13 @@
     />
     <style>
       body {
-        font-family: "Noto Sans JP", "Hiragino Kaku Gothic ProN", system-ui,
-          -apple-system, BlinkMacSystemFont, sans-serif;
+        font-family:
+          "Noto Sans JP",
+          "Hiragino Kaku Gothic ProN",
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          sans-serif;
         background: radial-gradient(
           circle at top,
           #fff3d7,
@@ -41,7 +46,9 @@
         border-radius: 1.5rem;
         border: 1px solid rgba(15, 23, 42, 0.06);
         box-shadow: 0 15px 40px rgba(255, 123, 0, 0.12);
-        transition: transform 120ms ease, box-shadow 120ms ease;
+        transition:
+          transform 120ms ease,
+          box-shadow 120ms ease;
       }
 
       .calendar-card:hover {
@@ -69,11 +76,6 @@
           </p>
         </div>
         <div class="flex flex-wrap gap-3">
-          <a
-            href="/overview"
-            class="px-4 py-2 rounded-full bg-slate-900 text-white text-sm shadow-lg shadow-slate-700/30"
-            >カテゴリ内訳</a
-          >
           <a
             href="/"
             class="px-4 py-2 rounded-full bg-white text-slate-900 text-sm border border-white/60 shadow"
