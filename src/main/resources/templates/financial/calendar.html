@@ -174,32 +174,25 @@
                     th:text="${day.dayOfMonth()}"
                   ></p>
                 </div>
-                <div class="text-right text-xs">
+                <div class="text-right text-xs space-y-0.5">
                   <p
-                    class="text-emerald-400 font-semibold"
-                    th:if="${day.hasIncome()}"
+                    th:each="record, stat : ${day.records()}"
+                    th:with="recordCount=${#lists.size(day.records())}"
+                    th:classappend="${record.recordType().name() == 'INCOME'} ? 'text-emerald-400' : 'text-rose-400'"
+                    th:style="${recordCount > 4 and stat.index < (recordCount - 4)} ? |opacity: ${0.3 + (stat.index * 0.7 / (recordCount - 4))}| : ''"
+                    class="font-semibold truncate"
+                    th:title="${record.note()}"
                   >
-                    +
                     <span
-                      th:text="${#numbers.formatDecimal(day.incomeTotal(), 1, 'COMMA', 0, 'POINT')}"
+                      th:text="${record.recordType().name() == 'INCOME' ? '+' : '-'}"
                     ></span>
-                  </p>
-                  <p
-                    class="text-rose-400 font-semibold"
-                    th:if="${day.hasExpense()}"
-                  >
-                    -
                     <span
-                      th:text="${#numbers.formatDecimal(day.expenseTotal(), 1, 'COMMA', 0, 'POINT')}"
+                      th:text="${#numbers.formatDecimal(record.amount(), 1, 'COMMA', 0, 'POINT')}"
                     ></span>
-                  </p>
-                  <p
-                    class="font-bold"
-                    th:classappend="${day.netTotal() >= 0} ? 'text-emerald-400' : 'text-rose-400'"
-                  >
-                    <span th:text="${day.netTotal() >= 0 ? '+' : ''}"></span>
                     <span
-                      th:text="${#numbers.formatDecimal(day.netTotal(), 1, 'COMMA', 0, 'POINT')}"
+                      th:if="${not #strings.isEmpty(record.note())}"
+                      class="text-[10px] text-slate-400 ml-1"
+                      th:text="${#strings.abbreviate(record.note(), 6)}"
                     ></span>
                   </p>
                 </div>
