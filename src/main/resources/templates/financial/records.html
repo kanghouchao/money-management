@@ -1,123 +1,208 @@
-<!DOCTYPE html>
+<!doctype html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ja">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>収支管理 | Premium Tracker</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        body {
-            font-family: 'Inter', 'Noto Sans JP', sans-serif;
-            background-color: #0f172a; /* أسود كحلي عميق */
-        }
-        .glass-panel {
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .glow-green { box-shadow: 0 0 15px rgba(16, 185, 129, 0.2); }
-        .glow-red { box-shadow: 0 0 15px rgba(244, 63, 94, 0.2); }
-        /* أنيميشن لظهور الصفوف */
-        tr { transition: all 0.3s ease; }
-        tr:hover { background: rgba(255, 255, 255, 0.03); transform: scale(1.005); }
+      body {
+        font-family: "Inter", "Noto Sans JP", sans-serif;
+        background-color: #0f172a; /* أسود كحلي عميق */
+      }
+      .glass-panel {
+        background: rgba(30, 41, 59, 0.7);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      /* أنيميشن لظهور الصفوف */
+      tr {
+        transition: all 0.3s ease;
+      }
+      tr:hover {
+        background: rgba(255, 255, 255, 0.03);
+        transform: scale(1.005);
+      }
     </style>
-</head>
-<body class="text-slate-200 min-h-screen antialiased">
-
+  </head>
+  <body class="text-slate-200 min-h-screen antialiased">
     <div class="fixed top-0 left-0 w-full h-full -z-10 overflow-hidden">
-        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-indigo-900/20 rounded-full blur-[120px]"></div>
-        <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-emerald-900/10 rounded-full blur-[120px]"></div>
+      <div
+        class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-indigo-900/20 rounded-full blur-[120px]"
+      ></div>
+      <div
+        class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-emerald-900/10 rounded-full blur-[120px]"
+      ></div>
     </div>
 
     <div class="max-w-6xl mx-auto px-6 py-12">
-        <header class="flex flex-col md:flex-row justify-between items-center mb-12 gap-6">
-            <div>
-                <h1 class="text-4xl font-extrabold tracking-tight bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent">
-                    収支ダッシュボード
-                </h1>
-                <p class="text-slate-400 mt-2 font-light">お財布の状況をスタイリッシュに把握する</p>
-            </div>
-            
-            <div class="flex gap-4">
-                <a href="/income/new" class="px-6 py-3 bg-emerald-500/10 border border-emerald-500/50 text-emerald-400 rounded-2xl hover:bg-emerald-500 hover:text-white transition-all duration-300 font-bold glow-green">
-                    + 収入登録
-                </a>
-                <a href="/expense/new" class="px-6 py-3 bg-rose-500/10 border border-rose-500/50 text-rose-400 rounded-2xl hover:bg-rose-500 hover:text-white transition-all duration-300 font-bold glow-red">
-                    - 支出登録
-                </a>
-            </div>
-        </header>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-            <div class="glass-panel p-6 rounded-3xl">
-                <p class="text-xs text-slate-400 uppercase tracking-widest mb-1">Total Views</p>
-                <div class="flex items-center gap-2">
-                    <span class="text-2xl font-bold">取引履歴</span>
-                    <span class="text-[10px] bg-indigo-500/20 text-indigo-400 px-2 py-0.5 rounded">All Data</span>
-                </div>
-            </div>
-            </div>
-
-        <div th:if="${successMessage}" class="mb-8 p-4 glass-panel border-l-4 border-emerald-500 text-emerald-400 rounded-r-xl animate-pulse">
-            <span class="font-bold">Success:</span> <span th:text="${successMessage}"></span>
+      <header
+        class="flex flex-col md:flex-row justify-between items-center mb-12 gap-6"
+      >
+        <div>
+          <h1
+            class="text-4xl font-extrabold tracking-tight bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent"
+          >
+            収支ダッシュボード
+          </h1>
+          <p class="text-slate-400 mt-2 font-light">
+            お財布の状況をスタイリッシュに把握する
+          </p>
         </div>
 
-        <div class="glass-panel rounded-[2rem] overflow-hidden shadow-2xl">
-            <div class="p-6 border-b border-white/5 flex justify-between items-center">
-                <h2 class="text-lg font-semibold text-white">履歴一覧</h2>
-                <div class="flex gap-2">
-                    <a href="/overview" class="p-2 hover:bg-white/10 rounded-lg transition">📊</a>
-                    <a href="/calendar" class="p-2 hover:bg-white/10 rounded-lg transition">📅</a>
-                </div>
-            </div>
+        <div class="flex gap-4">
+          <a
+            href="/income/new"
+            class="px-6 py-3 bg-emerald-500/10 border border-emerald-500/50 text-emerald-400 rounded-2xl hover:bg-emerald-500 hover:text-white transition-all duration-300 font-bold shadow-lg shadow-emerald-500/20"
+          >
+            + 収入登録
+          </a>
+          <a
+            href="/expense/new"
+            class="px-6 py-3 bg-rose-500/10 border border-rose-500/50 text-rose-400 rounded-2xl hover:bg-rose-500 hover:text-white transition-all duration-300 font-bold shadow-lg shadow-rose-500/20"
+          >
+            - 支出登録
+          </a>
+        </div>
+      </header>
 
-            <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="bg-white/[0.02]">
-                            <th class="px-8 py-5 text-xs font-bold text-slate-500 uppercase">ID</th>
-                            <th class="px-8 py-5 text-xs font-bold text-slate-500 uppercase">日付</th>
-                            <th class="px-8 py-5 text-xs font-bold text-slate-500 uppercase">タイプ</th>
-                            <th class="px-8 py-5 text-right text-xs font-bold text-slate-500 uppercase">金額</th>
-                            <th class="px-8 py-5 text-xs font-bold text-slate-500 uppercase">メモ</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-white/[0.05]">
-                        <tr th:each="record : ${records}" class="group">
-                            <td class="px-8 py-5 text-sm font-mono text-slate-500" th:text="${'#' + record.id}"></td>
-                            <td class="px-8 py-5">
-                                <div class="text-sm font-medium text-slate-300" th:text="${#temporals.format(record.recordedAt, 'yyyy.MM.dd')}"></div>
-                            </td>
-                            <td class="px-8 py-5">
-                                <span th:if="${record.recordType.name() == 'INCOME'}" class="px-3 py-1 bg-emerald-500/10 text-emerald-400 text-[10px] font-bold rounded-full border border-emerald-500/20 uppercase tracking-tighter">Income</span>
-                                <span th:if="${record.recordType.name() == 'EXPENSE'}" class="px-3 py-1 bg-rose-500/10 text-rose-400 text-[10px] font-bold rounded-full border border-rose-500/20 uppercase tracking-tighter">Expense</span>
-                            </td>
-                            <td class="px-8 py-5 text-right">
-                                <span th:class="${record.recordType.name() == 'INCOME' ? 'text-emerald-400' : 'text-rose-400'}" 
-                                      class="text-lg font-bold tracking-tight"
-                                      th:text="${(record.recordType.name() == 'EXPENSE' ? '-' : '+') + #numbers.formatInteger(record.amount, 1, 'COMMA')}">
-                                </span>
-                                <span class="text-[10px] text-slate-500 ml-1">JPY</span>
-                            </td>
-                            <td class="px-8 py-5">
-                                <p class="text-sm text-slate-400 italic max-w-xs truncate" th:text="${record.note} ?: 'No notes added'"></p>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+        <div class="glass-panel p-6 rounded-3xl">
+          <p class="text-xs text-slate-400 uppercase tracking-widest mb-1">
+            Total Views
+          </p>
+          <div class="flex items-center gap-2">
+            <span class="text-2xl font-bold">取引履歴</span>
+            <span
+              class="text-[10px] bg-indigo-500/20 text-indigo-400 px-2 py-0.5 rounded"
+              >All Data</span
+            >
+          </div>
+        </div>
+      </div>
 
-            <div th:if="${records == null or #lists.isEmpty(records)}" class="py-24 text-center">
-                <div class="text-6xl mb-4 opacity-20">💎</div>
-                <p class="text-slate-500 font-light">記録がまだありません。新しいデータを追加してください。</p>
-            </div>
+      <div
+        th:if="${successMessage}"
+        class="mb-8 p-4 glass-panel border-l-4 border-emerald-500 text-emerald-400 rounded-r-xl animate-pulse"
+      >
+        <span class="font-bold">Success:</span>
+        <span th:text="${successMessage}"></span>
+      </div>
+
+      <div class="glass-panel rounded-[2rem] overflow-hidden shadow-2xl">
+        <div
+          class="p-6 border-b border-white/5 flex justify-between items-center"
+        >
+          <h2 class="text-lg font-semibold text-white">履歴一覧</h2>
+          <div class="flex gap-2">
+            <a
+              href="/overview"
+              class="p-2 hover:bg-white/10 rounded-lg transition"
+              >📊</a
+            >
+            <a
+              href="/calendar"
+              class="p-2 hover:bg-white/10 rounded-lg transition"
+              >📅</a
+            >
+          </div>
         </div>
 
-        <footer class="mt-12 text-center text-slate-600 text-[10px] uppercase tracking-[0.2em]">
-            &copy; 2026 Premium Finance • Minimalist Dashboard
-        </footer>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="bg-white/[0.02]">
+                <th
+                  class="px-8 py-5 text-xs font-bold text-slate-500 uppercase"
+                >
+                  ID
+                </th>
+                <th
+                  class="px-8 py-5 text-xs font-bold text-slate-500 uppercase"
+                >
+                  日付
+                </th>
+                <th
+                  class="px-8 py-5 text-xs font-bold text-slate-500 uppercase"
+                >
+                  タイプ
+                </th>
+                <th
+                  class="px-8 py-5 text-right text-xs font-bold text-slate-500 uppercase"
+                >
+                  金額
+                </th>
+                <th
+                  class="px-8 py-5 text-xs font-bold text-slate-500 uppercase"
+                >
+                  メモ
+                </th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-white/[0.05]">
+              <tr th:each="record : ${records}" class="group">
+                <td
+                  class="px-8 py-5 text-sm font-mono text-slate-500"
+                  th:text="${'#' + record.id}"
+                ></td>
+                <td class="px-8 py-5">
+                  <div
+                    class="text-sm font-medium text-slate-300"
+                    th:text="${#temporals.format(record.recordedAt, 'yyyy.MM.dd')}"
+                  ></div>
+                </td>
+                <td class="px-8 py-5">
+                  <span
+                    th:if="${record.recordType.name() == 'INCOME'}"
+                    class="px-3 py-1 bg-emerald-500/10 text-emerald-400 text-[10px] font-bold rounded-full border border-emerald-500/20 uppercase tracking-tighter"
+                    >Income</span
+                  >
+                  <span
+                    th:if="${record.recordType.name() == 'EXPENSE'}"
+                    class="px-3 py-1 bg-rose-500/10 text-rose-400 text-[10px] font-bold rounded-full border border-rose-500/20 uppercase tracking-tighter"
+                    >Expense</span
+                  >
+                </td>
+                <td class="px-8 py-5 text-right">
+                  <span
+                    th:class="${record.recordType.name() == 'INCOME' ? 'text-emerald-400' : 'text-rose-400'}"
+                    class="text-lg font-bold tracking-tight"
+                    th:text="${(record.recordType.name() == 'EXPENSE' ? '-' : '+') + #numbers.formatInteger(record.amount, 1, 'COMMA')}"
+                  >
+                  </span>
+                  <span class="text-[10px] text-slate-500 ml-1">JPY</span>
+                </td>
+                <td class="px-8 py-5">
+                  <p
+                    class="text-sm text-slate-400 italic max-w-xs truncate"
+                    th:text="${record.note} ?: 'No notes added'"
+                  ></p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div
+          th:if="${records == null or #lists.isEmpty(records)}"
+          class="py-24 text-center"
+        >
+          <div class="text-6xl mb-4 opacity-20">💎</div>
+          <p class="text-slate-500 font-light">
+            記録がまだありません。新しいデータを追加してください。
+          </p>
+        </div>
+      </div>
+
+      <footer
+        class="mt-12 text-center text-slate-600 text-[10px] uppercase tracking-[0.2em]"
+      >
+        &copy; 2026 Premium Finance • Minimalist Dashboard
+      </footer>
     </div>
-
-</body>
+  </body>
 </html>

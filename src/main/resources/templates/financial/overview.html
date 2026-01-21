@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ja">
   <head>
     <meta charset="UTF-8" />
@@ -24,9 +24,14 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
   </head>
   <body class="min-h-screen relative text-slate-100">
-    <div class="aura"></div>
-    <div class="aura"></div>
-    <div class="aura"></div>
+    <div class="fixed top-0 left-0 w-full h-full -z-10 overflow-hidden">
+      <div
+        class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-indigo-900/20 rounded-full blur-[120px]"
+      ></div>
+      <div
+        class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-emerald-900/10 rounded-full blur-[120px]"
+      ></div>
+    </div>
 
     <div class="relative z-10 max-w-6xl mx-auto px-6 py-12 space-y-10">
       <header
@@ -37,63 +42,89 @@
             Monthly
           </p>
           <h1
-            class="text-3xl md:text-4xl font-semibold text-white"
+            class="text-4xl font-extrabold bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent"
             th:text="${monthLabel}"
           ></h1>
-          <p class="text-sm text-slate-400 mt-2">
+          <p class="text-sm text-slate-400 mt-2 font-light">
             カテゴリ別構成で今月の資金フローを一目で確認できます。
           </p>
         </div>
         <div class="flex gap-3">
           <a
             href="/"
-            class="px-4 py-2 rounded-full bg-white text-slate-900 text-sm font-medium shadow-lg shadow-white/20"
+            class="px-6 py-3 bg-emerald-500/10 border border-emerald-500/50 text-emerald-400 rounded-2xl hover:bg-emerald-500 hover:text-white transition-all duration-300 font-bold shadow-lg shadow-emerald-500/20"
             >ホーム</a
           >
         </div>
       </header>
 
       <section class="grid gap-6 md:grid-cols-3">
-        <div class="panel rounded-2xl p-6 shadow-2xl shadow-black/40">
+        <div
+          class="glass-panel rounded-3xl p-6 shadow-2xl shadow-black/40"
+          style="
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+          "
+        >
           <p class="text-slate-400 text-xs uppercase tracking-widest">
             Monthly Income
           </p>
           <p
-            class="text-3xl font-semibold text-white mt-2"
+            class="text-3xl font-bold text-emerald-400 mt-2"
             th:text="${incomeTotal}"
           ></p>
           <p class="text-xs text-slate-500 mt-1" th:text="${monthLabel}"></p>
         </div>
-        <div class="panel rounded-2xl p-6 shadow-2xl shadow-black/40">
+        <div
+          class="glass-panel rounded-3xl p-6 shadow-2xl shadow-black/40"
+          style="
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+          "
+        >
           <p class="text-slate-400 text-xs uppercase tracking-widest">
             Monthly Expense
           </p>
           <p
-            class="text-3xl font-semibold text-white mt-2"
+            class="text-3xl font-bold text-rose-400 mt-2"
             th:text="${expenseTotal}"
           ></p>
           <p class="text-xs text-slate-500 mt-1" th:text="${monthLabel}"></p>
         </div>
-        <div class="panel rounded-2xl p-6 shadow-2xl shadow-black/40">
+        <div
+          class="glass-panel rounded-3xl p-6 shadow-2xl shadow-black/40"
+          style="
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+          "
+        >
           <p class="text-slate-400 text-xs uppercase tracking-widest">
             Net Balance
           </p>
           <p
-            class="text-3xl font-semibold mt-2"
+            class="text-3xl font-bold mt-2"
             th:text="${netBalance}"
-            th:classappend="${netBalance >= 0} ? 'text-[var(--accent-green)]' : 'text-[var(--accent-rose)]'"
+            th:classappend="${netBalance >= 0} ? 'text-emerald-400' : 'text-rose-400'"
           ></p>
           <p class="text-xs text-slate-500 mt-1">収入 − 支出</p>
         </div>
       </section>
 
       <section
-        class="panel rounded-3xl p-8 shadow-[0_30px_80px_rgba(0,0,0,0.45)]"
+        class="glass-panel rounded-3xl p-8 shadow-[0_30px_80px_rgba(0,0,0,0.45)]"
+        style="
+          background: rgba(30, 41, 59, 0.7);
+          backdrop-filter: blur(12px);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+        "
       >
         <div class="flex items-center justify-between mb-6">
           <div>
             <p class="text-sm text-slate-400">Category Split</p>
-            <h2 class="text-2xl font-semibold text-white">カテゴリ別シェア</h2>
+            <h2 class="text-2xl font-bold text-white">カテゴリ別シェア</h2>
           </div>
           <p class="text-xs text-slate-400">Chart.js Doughnut</p>
         </div>
