@@ -23,7 +23,7 @@ public class FinancialRecordService {
   private final FinancialRecordRepository financialRecordRepository;
 
   public List<FinancialRecord> getAllOrderedByRecordedAtDesc() {
-    return financialRecordRepository.findAllByOrderByRecordedAtDesc();
+    return financialRecordRepository.findAllByOrderByRecordedAtDescIdDesc();
   }
 
   public Income registerIncome(

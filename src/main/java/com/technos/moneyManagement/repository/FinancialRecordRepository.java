@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface FinancialRecordRepository extends JpaRepository<FinancialRecord, Integer> {
 
-  List<FinancialRecord> findAllByOrderByRecordedAtDesc();
+  List<FinancialRecord> findAllByOrderByRecordedAtDescIdDesc();
 
   List<FinancialRecord> findAllByRecordedAtBetweenOrderByRecordedAtAsc(
       LocalDate startInclusive, LocalDate endInclusive);
