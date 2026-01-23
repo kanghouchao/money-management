@@ -24,6 +24,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -31,6 +32,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -41,9 +43,10 @@ public class FinancialController {
   private final FinancialRecordService financialRecordService;
 
   @GetMapping
-  public String viewFinancialRecords(Model model) {
-    List<FinancialRecordView> records =
-        financialRecordService.getAllOrderedByRecordedAtDesc().stream().map(this::toView).toList();
+  public String viewFinancialRecords(
+      @RequestParam(name = "page", defaultValue = "0") int page, Model model) {
+    Page<FinancialRecord> recordPage = financialRecordService.getRecordsPage(page, 10);
+    Page<FinancialRecordView> records = recordPage.map(this::toView);
     model.addAttribute("records", records);
     return "financial/records";
   }

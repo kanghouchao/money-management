@@ -14,6 +14,8 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,8 +24,9 @@ public class FinancialRecordService {
 
   private final FinancialRecordRepository financialRecordRepository;
 
-  public List<FinancialRecord> getAllOrderedByRecordedAtDesc() {
-    return financialRecordRepository.findAllByOrderByRecordedAtDescIdDesc();
+  public Page<FinancialRecord> getRecordsPage(int page, int size) {
+    return financialRecordRepository.findAllByOrderByRecordedAtDescIdDesc(
+        PageRequest.of(page, size));
   }
 
   public Income registerIncome(
