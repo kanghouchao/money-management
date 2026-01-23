@@ -57,8 +57,6 @@ public class DataInitializer implements CommandLineRunner {
 
   /** 食費の生成 */
   private void generateFoodExpenses(LocalDate date, int dayOfWeek) {
-    int day = date.getDayOfMonth();
-
     // 朝食（コンビニやカフェ）
     if (dayOfWeek <= 5) {
       int breakfastCost = 300 + random.nextInt(200); // 300-500円

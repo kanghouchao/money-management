@@ -39,10 +39,10 @@
       >
         <div>
           <p class="text-sm uppercase tracking-[0.5em] text-slate-400">
-            Monthly
+            月次レポート
           </p>
           <h1
-            class="text-4xl font-extrabold bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent"
+            class="text-4xl font-extrabold bg-linear-to-r from-white to-slate-400 bg-clip-text text-transparent"
             th:text="${monthLabel}"
           ></h1>
           <p class="text-sm text-slate-400 mt-2 font-light">
@@ -68,11 +68,11 @@
           "
         >
           <p class="text-slate-400 text-xs uppercase tracking-widest">
-            Monthly Income
+            月間収入
           </p>
           <p
             class="text-3xl font-bold text-emerald-400 mt-2"
-            th:text="${incomeTotal}"
+            th:text="${#numbers.formatInteger(incomeTotal, 1, 'COMMA')}"
           ></p>
           <p class="text-xs text-slate-500 mt-1" th:text="${monthLabel}"></p>
         </div>
@@ -85,11 +85,11 @@
           "
         >
           <p class="text-slate-400 text-xs uppercase tracking-widest">
-            Monthly Expense
+            月間支出
           </p>
           <p
             class="text-3xl font-bold text-rose-400 mt-2"
-            th:text="${expenseTotal}"
+            th:text="${#numbers.formatInteger(expenseTotal, 1, 'COMMA')}"
           ></p>
           <p class="text-xs text-slate-500 mt-1" th:text="${monthLabel}"></p>
         </div>
@@ -101,12 +101,10 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
           "
         >
-          <p class="text-slate-400 text-xs uppercase tracking-widest">
-            Net Balance
-          </p>
+          <p class="text-slate-400 text-xs uppercase tracking-widest">収支差</p>
           <p
             class="text-3xl font-bold mt-2"
-            th:text="${netBalance}"
+            th:text="${#numbers.formatInteger(netBalance, 1, 'COMMA')}"
             th:classappend="${netBalance >= 0} ? 'text-emerald-400' : 'text-rose-400'"
           ></p>
           <p class="text-xs text-slate-500 mt-1">収入 − 支出</p>
@@ -123,15 +121,15 @@
       >
         <div class="flex items-center justify-between mb-6">
           <div>
-            <p class="text-sm text-slate-400">Category Split</p>
+            <p class="text-sm text-slate-400">カテゴリ内訳</p>
             <h2 class="text-2xl font-bold text-white">カテゴリ別シェア</h2>
           </div>
-          <p class="text-xs text-slate-400">Chart.js Doughnut</p>
+          <p class="text-xs text-slate-400">円グラフ</p>
         </div>
         <div class="grid gap-8 md:grid-cols-2">
           <div>
             <h3 class="text-sm text-slate-300 uppercase tracking-[0.3em] mb-3">
-              Income Mix
+              収入構成
             </h3>
             <div class="relative aspect-square">
               <canvas id="incomePieChart"></canvas>
@@ -145,7 +143,7 @@
           </div>
           <div>
             <h3 class="text-sm text-slate-300 uppercase tracking-[0.3em] mb-3">
-              Expense Mix
+              支出構成
             </h3>
             <div class="relative aspect-square">
               <canvas id="expensePieChart"></canvas>

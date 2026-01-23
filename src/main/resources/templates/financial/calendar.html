@@ -93,7 +93,7 @@
       >
         <div>
           <p class="text-sm text-slate-400 tracking-[0.5em] uppercase">
-            Flow Calendar
+            月次カレンダー
           </p>
           <h1
             class="text-4xl font-extrabold text-white"
@@ -114,33 +114,35 @@
 
       <section class="grid gap-4 md:grid-cols-3">
         <article class="glass-panel p-6 rounded-3xl">
-          <p class="text-xs uppercase tracking-widest text-slate-400">Income</p>
+          <p class="text-xs uppercase tracking-widest text-slate-400">
+            月間収入
+          </p>
           <h2 class="text-3xl text-emerald-400 font-bold mt-2">
             <span
-              th:text="${#numbers.formatDecimal(monthIncomeTotal, 1, 'COMMA', 0, 'POINT')}"
+              th:text="${#numbers.formatInteger(monthIncomeTotal, 1, 'COMMA')}"
             ></span>
           </h2>
           <p class="text-xs text-slate-500 mt-1">今月の合計収入</p>
         </article>
         <article class="glass-panel p-6 rounded-3xl">
           <p class="text-xs uppercase tracking-widest text-slate-400">
-            Expense
+            月間支出
           </p>
           <h2 class="text-3xl text-rose-400 font-bold mt-2">
             <span
-              th:text="${#numbers.formatDecimal(monthExpenseTotal, 1, 'COMMA', 0, 'POINT')}"
+              th:text="${#numbers.formatInteger(monthExpenseTotal, 1, 'COMMA')}"
             ></span>
           </h2>
           <p class="text-xs text-slate-500 mt-1">今月の合計支出</p>
         </article>
         <article class="glass-panel p-6 rounded-3xl">
-          <p class="text-xs uppercase tracking-widest text-slate-400">Net</p>
+          <p class="text-xs uppercase tracking-widest text-slate-400">収支差</p>
           <h2
             class="text-3xl font-bold mt-2"
             th:classappend="${monthNet >= 0} ? 'text-emerald-400' : 'text-rose-400'"
           >
             <span
-              th:text="${#numbers.formatDecimal(monthNet, 1, 'COMMA', 0, 'POINT')}"
+              th:text="${#numbers.formatInteger(monthNet, 1, 'COMMA')}"
             ></span>
           </h2>
           <p class="text-xs text-slate-500 mt-1">収入 − 支出</p>
@@ -187,7 +189,7 @@
                       th:text="${record.recordType().name() == 'INCOME' ? '+' : '-'}"
                     ></span>
                     <span
-                      th:text="${#numbers.formatDecimal(record.amount(), 1, 'COMMA', 0, 'POINT')}"
+                      th:text="${#numbers.formatInteger(record.amount(), 1, 'COMMA')}"
                     ></span>
                     <span
                       th:if="${not #strings.isEmpty(record.note())}"
@@ -202,7 +204,7 @@
                 class="text-[11px] uppercase tracking-[0.3em] text-emerald-400 font-bold"
                 th:if="${day.date().equals(today)}"
               >
-                Today
+                今日
               </div>
             </article>
           </div>

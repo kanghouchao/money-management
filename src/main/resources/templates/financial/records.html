@@ -45,7 +45,7 @@
       >
         <div>
           <h1
-            class="text-4xl font-extrabold tracking-tight bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent"
+            class="text-4xl font-extrabold tracking-tight bg-linear-to-r from-white to-slate-400 bg-clip-text text-transparent"
           >
             収支ダッシュボード
           </h1>
@@ -69,21 +69,6 @@
           </a>
         </div>
       </header>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-        <div class="glass-panel p-6 rounded-3xl">
-          <p class="text-xs text-slate-400 uppercase tracking-widest mb-1">
-            Total Views
-          </p>
-          <div class="flex items-center gap-2">
-            <span class="text-2xl font-bold">取引履歴</span>
-            <span
-              class="text-[10px] bg-indigo-500/20 text-indigo-400 px-2 py-0.5 rounded"
-              >All Data</span
-            >
-          </div>
-        </div>
-      </div>
 
       <div
         th:if="${successMessage}"
@@ -159,12 +144,12 @@
                   <span
                     th:if="${record.recordType.name() == 'INCOME'}"
                     class="px-3 py-1 bg-emerald-500/10 text-emerald-400 text-[10px] font-bold rounded-full border border-emerald-500/20 uppercase tracking-tighter"
-                    >Income</span
+                    >収入</span
                   >
                   <span
                     th:if="${record.recordType.name() == 'EXPENSE'}"
                     class="px-3 py-1 bg-rose-500/10 text-rose-400 text-[10px] font-bold rounded-full border border-rose-500/20 uppercase tracking-tighter"
-                    >Expense</span
+                    >支出</span
                   >
                 </td>
                 <td class="px-8 py-5 text-right">
