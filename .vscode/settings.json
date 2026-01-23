@@ -2,5 +2,7 @@
   "[java]": {
     "editor.defaultFormatter": "josevseb.google-java-format-for-vs-code",
     "editor.formatOnSave": true
-  }
+  },
+  "java.compile.nullAnalysis.mode": "disabled",
+  "java.configuration.updateBuildConfiguration": "interactive"
 }

@@ -1,11 +1,11 @@
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '3.5.9'
+	id 'org.springframework.boot' version '3.5.10'
 	id 'io.spring.dependency-management' version '1.1.7'
 }
 
 group = 'com.technos'
-version = '0.0.1-SNAPSHOT'
+version = '1.0.0'
 description = '先進的な財務管理システム'
 
 java {
