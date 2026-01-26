@@ -177,10 +177,18 @@ public class DataInitializer implements CommandLineRunner {
 
   /** 給与収入の生成（25日） */
   private void generateSalaryIncome(LocalDate date) {
-    // 基本給（手取り約42万円）
+    // 基本給（調整後の手取り）
     financialRecordService.registerIncome(
-        date, new BigDecimal("420000"), "1月分給与（週末のため前倒し支給）", IncomeCategory.SALARY);
+        date, new BigDecimal("265800"), "1月分給与（週末のため前倒し支給）", IncomeCategory.SALARY);
 
-    log.info("給与データを追加しました: {} - 420,000円", date);
+    // 一時ボーナス（基本給2か月分）
+    financialRecordService.registerIncome(
+        date, new BigDecimal("531600"), "冬季ボーナス（基本給2か月分）", IncomeCategory.BONUS);
+
+    // 税金支出
+    financialRecordService.registerExpense(
+        date, new BigDecimal("65000"), "所得税・住民税", ExpenseCategory.TAX);
+
+    log.info("給与・ボーナス・税金データを追加しました: {}", date);
   }
 }

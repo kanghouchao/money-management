@@ -11,7 +11,8 @@ public enum ExpenseCategory {
   UTILITIES("光熱費", "\uD83D\uDCA1"),
   TRANSPORTATION("交通", "\uD83D\uDE8C"),
   COMMUNICATION("通信", "\uD83D\uDCF1"),
-  HOUSING("住居", "\uD83C\uDFE0");
+  HOUSING("住居", "\uD83C\uDFE0"),
+  TAX("税金", "\uD83D\uDCB8");
 
   private final String label;
   private final String icon;
